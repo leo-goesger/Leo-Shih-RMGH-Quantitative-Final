@@ -57,20 +57,17 @@ summary(NWS_Clean_Imp3$AGE)
 summary(NWS_Clean_Imp3$SLEEPHRS)
 
 # anova
-SEX_DUMMY_ANOVA <- aov(HAPPY ~ SEX_DUMMY, data = NWS_Clean_Imp3) %>% tidy()
-PERSONAL_ANOVA <- aov(HAPPY ~ PERSONAL, data = NWS_Clean_Imp3) #%>% tidy()
-HHINC_ANOVA <- aov(HAPPY ~ HHINC, data = NWS_Clean_Imp3) #%>% tidy()
-MARSTAT_DUMMY_ANOVA <- aov(HAPPY ~ MARSTAT_DUMMY, data = NWS_Clean_Imp3) #%>% tidy()
-EDUC_ANOVA <- aov(HAPPY ~ EDUC, data = NWS_Clean_Imp3) #%>% tidy()
-RELIG_IMP_ANOVA <- aov(HAPPY ~ RELIG_IMP, data = NWS_Clean_Imp3) #%>% tidy()
-SAT_WORK_ANOVA <- aov(HAPPY ~ SAT_WORK, data = NWS_Clean_Imp3) #%>% tidy()
+SEX_DUMMY_ANOVA <- aov(HAPPY ~ SEX_DUMMY, data = NWS_Clean_Imp3) 
+MARSTAT_DUMMY_ANOVA <- aov(HAPPY ~ MARSTAT_DUMMY, data = NWS_Clean_Imp3) 
+EDUC_ANOVA <- aov(HAPPY ~ EDUC, data = NWS_Clean_Imp3)
 
-rbind(SEX_DUMMY_ANOVA, PERSONAL_ANOVA, HHINC_ANOVA, MARSTAT_DUMMY_ANOVA, 
-      EDUC_ANOVA, RELIG_IMP_ANOVA, SAT_WORK_ANOVA) %>% 
+
+rbind(SEX_DUMMY_ANOVA, MARSTAT_DUMMY_ANOVA, 
+      EDUC_ANOVA) %>% 
   write.csv(here("ANOVA_Results.csv"))
 
 ANOVA_Results <- here("ANOVA_Results.csv") %>% read_csv()
-
+view(ANOVA_Results)
 ## correlation analysis
 Cor_Sleep_Happy <- cor.test(NWS_Clean_Imp3$SLEEPHRS, NWS_Clean_Imp3$HAPPY, method = "pearson") #%>% tidy()
 Cor_Sleep_Happy
@@ -83,6 +80,17 @@ Cor_Ment_Happy
 
 Cor_Phys_Happy <- cor.test(NWS_Clean_Imp3$PHYS_HEALTH, NWS_Clean_Imp3$HAPPY, method = "pearson") #%>% tidy()
 Cor_Phys_Happy
+
+my_data <- NWS_Clean_Imp3[, c(2, 3, 4, 5, 6, 8, 9, 10, 13, 14, 15)]
+head(my_data)
+
+CorrTable <- cor(my_data)
+
+install.packages("Hmisc")
+library(Hmisc)
+
+res2 <- rcorr(as.matrix(my_data))
+res2
 
 rbind(Cor_Sleep_Happy, Cor_Sleep_Happy, Cor_Age_Happy, 
       Cor_Ment_Happy, Cor_Phys_Happy) %>%
@@ -104,4 +112,8 @@ cbind(happy_linreg, ment_linreg, phys_linreg) %>%
   write.csv(here("linreg_Results.csv"))
 
 linreg_Results <- here("linreg_Results.csv") %>% read_csv()
+
+y = 
+
+  NWS_Clean_Imp3 %>% write.csv(here("NWS_Clean_Imp3"))
   
